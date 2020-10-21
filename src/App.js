@@ -1,22 +1,26 @@
-import React from 'react'
-import logo from './logo.svg'
-import './App.css'
+import React,{ Suspense, lazy } from 'react'
 import {Switch, Route} from 'react-router-dom'
+import './App.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
-import Home from './pages/Home'
-import About from './pages/About'
-import History from './pages/History'
+import Loading from './components/Loading'
+
+const Home = lazy(()=> import('./pages/Home'))
+const About = lazy(()=>import('./pages/About'))
+const History = lazy(()=>import('./pages/History'))
+
 
 function App() {
   return (
     <div className="app">
       <Header/>
+      <Suspense fallback={Loading}>
         <Switch>
           <Route path="/" exact component={Home}/>
           <Route path="/history"  component={History}/>
           <Route path="/about"  component={About}/>
         </Switch>
+      </Suspense>
       <Footer/>
     </div>
   )
