@@ -1,8 +1,8 @@
-import React from 'react'
+import React, {useState} from 'react'
 import LogoUrl from '../logo.svg'
 import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
-import {Button} from 'antd'
+import {Button,Tag} from 'antd'
 
 const Header = styled.header`
   display:flex;
@@ -28,6 +28,8 @@ const StyledButton = styled(Button)`
 `
 
 function Component() {
+  const [isLogin, setIsLogin] = useState(false)
+
   return (
     <Header>
       <Logo src={LogoUrl} alt="logo"/>
@@ -37,8 +39,15 @@ function Component() {
         <StyledLink to="/about" activeClassName="active">关于我</StyledLink>
       </nav>
       <Login>
-        <StyledButton type="primary">登录</StyledButton>
-        <StyledButton type="primary">注册</StyledButton>
+        {
+          isLogin ? <>
+            <Tag color="volcano">McCallWang</Tag>
+            <StyledButton type="primary" onClick={() => setIsLogin(true)}>注册</StyledButton>
+          </> : <>
+            <StyledButton type="primary" onClick={() => setIsLogin(true)}>登录</StyledButton>
+            <StyledButton type="primary">注册</StyledButton>
+          </>
+        }
       </Login>
     </Header>
   )
