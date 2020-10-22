@@ -8,16 +8,36 @@ AV.init({
 
 console.log('start............')
 
-let user = new User()
-user.setUsername('McCallWang')
-user.setPassword('123456')
-user.signUp().then((loginedUser) => {
-    console.log('注册成功')
-    console.log('登录的用户信息：', loginedUser)
-  }, (error) => {
-    console.log('注册失败')
-    console.log(error)
-  }
-)
+const Auth = {
+  register(username, password) {
+    let user = new User()
+    user.setUsername(username)
+    user.setPassword(password)
+    return new Promise((resolve, reject) => {
+      user.signUp().then(
+        loginedUser => resolve(loginedUser), error => reject(error)
+      )
+    })
+  },
 
-export default {}
+  login(username, password) {
+    return new Promise((resolve, reject) => {
+      User.logIn(username, password).then(
+        loginedUser => resolve(loginedUser),
+        error => reject(error)
+      )
+    })
+  },
+
+  logout() {
+    User.logout()
+  },
+
+  getCurrentUser() {
+    return User.current()
+  }
+}
+
+export {
+  Auth
+}
