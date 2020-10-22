@@ -40,6 +40,14 @@ const Component = () => {
     return Promise.resolve()
   }
 
+  const validateConfirm = ({getFieldValue}) => ({
+    validator(rule, value) {
+      if (getFieldValue('password') === value) return Promise.resolve()
+      return Promise.reject('两次密码不一致')
+
+    }
+  })
+
   return (
     <Wrapper>
       <Title>注册</Title>
@@ -65,7 +73,17 @@ const Component = () => {
         <Form.Item
           label="密码"
           name="password"
-          rules={[{required: true, message: '输入密码!'}]}
+          rules={[
+            {required: true, message: '输入密码!'},
+            {
+              min: 4,
+              message: '最少4个字符'
+            },
+            {
+              max: 10,
+              message: '最多10个字符'
+            }
+          ]}
         >
           <Input.Password/>
         </Form.Item>
@@ -73,7 +91,10 @@ const Component = () => {
         <Form.Item
           label="确认密码"
           name="conformPassword"
-          rules={[{required: true, message: '再次确认密码!'}]}
+          rules={[
+            {required: true, message: '再次确认密码!'},
+            validateConfirm
+          ]}
         >
           <Input.Password/>
         </Form.Item>
