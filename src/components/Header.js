@@ -42,7 +42,7 @@ function Component() {
         {
           isLogin ? <>
             <Tag color="volcano">McCallWang</Tag>
-            <StyledButton type="primary" onClick={() => setIsLogin(true)}>注册</StyledButton>
+            <StyledButton type="primary" onClick={() => setIsLogin(false)}>注销</StyledButton>
           </> : <>
             <StyledButton type="primary" onClick={() => setIsLogin(true)}>登录</StyledButton>
             <StyledButton type="primary">注册</StyledButton>
