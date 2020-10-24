@@ -1,16 +1,12 @@
 import {observable, action} from 'mobx'
 import {Auth} from '../models'
 import UserStore from './user'
-import {User} from 'leancloud-storage'
 
 class AuthStore {
-  // 状态
   @observable values = {
     username: '',
     password: ''
   }
-
-  // 行为
 
   @action setUsername(username) {
     this.values.username = username
@@ -26,9 +22,9 @@ class AuthStore {
         .then(user => {
           UserStore.pullUser()
           resolve(user)
-        }).catch(error => {
+        }).catch(err => {
         UserStore.resetUser()
-        reject(error)
+        reject(err)
       })
     })
   }
@@ -39,9 +35,9 @@ class AuthStore {
         .then(user => {
           UserStore.pullUser()
           resolve(user)
-        }).catch(error => {
+        }).catch(err => {
         UserStore.resetUser()
-        reject(error)
+        reject(err)
       })
     })
   }
@@ -50,6 +46,8 @@ class AuthStore {
     Auth.logout()
     UserStore.resetUser()
   }
+
 }
+
 
 export default new AuthStore()

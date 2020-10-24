@@ -1,17 +1,17 @@
-import {observable, action} from 'mobx'
-import {Auth} from '../models'
+import { observable, action } from 'mobx';
+import { Auth } from '../models';
 
 class UserStore {
-  // 状态
-  @observable currentUser = null
+  @observable currentUser = null;
 
   @action pullUser() {
     this.currentUser = Auth.getCurrentUser()
   }
 
   @action resetUser() {
-    this.currentUser = null
+    this.currentUser = null;
   }
 }
 
-export default new UserStore
+
+export default new UserStore();

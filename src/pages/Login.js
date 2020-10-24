@@ -30,10 +30,11 @@ const Component = () => {
   const onFinish = values => {
     AuthStore.setUsername(values.username)
     AuthStore.setPassword(values.password)
-    AuthStore.login(values.username, values.password)
+    AuthStore.login()
       .then(() => {
         console.log('登录成功')
-      }).catch(() => {
+      }).catch((e) => {
+      console.log(e)
       console.log('登录失败')
     })
   }
@@ -44,8 +45,8 @@ const Component = () => {
 
 
   const validateUsername = (rule, value) => {
-    if (/\W/.test(value)) return Promise.reject('只能包含字母、数字、下划线')
-    if (value.length < 4 || value.length > 10) return Promise.reject('长度为4~10个字符')
+    if (/\W/.test(value)) return Promise.reject('只能是字母数字下划线')
+    if (value.length < 4 || value.length > 10) return Promise.reject('长度为4～10个字符')
     return Promise.resolve()
   }
 
