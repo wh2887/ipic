@@ -16,7 +16,6 @@ const Title = styled.h1`
   margin-bottom: 30px;
 `
 
-
 const layout = {
   labelCol: {span: 4},
   wrapperCol: {span: 20},
@@ -49,7 +48,6 @@ const Component = () => {
     if (value.length < 4 || value.length > 10) return Promise.reject('长度为4~10个字符')
     return Promise.resolve()
   }
-
 
   return (
     <Wrapper>

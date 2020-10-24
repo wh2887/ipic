@@ -38,6 +38,4 @@ const Auth = {
   }
 }
 
-export {
-  Auth
-}
+export {Auth}

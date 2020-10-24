@@ -2,7 +2,8 @@ import React, {useState} from 'react'
 import LogoUrl from '../logo.svg'
 import {NavLink} from 'react-router-dom'
 import styled from 'styled-components'
-import {Button,Tag} from 'antd'
+import {Button, Tag} from 'antd'
+import UserStore from '../stores/user'
 
 const Header = styled.header`
   display:flex;
@@ -41,7 +42,9 @@ function Component() {
       <Login>
         {
           isLogin ? <>
-            <Tag color="volcano">McCallWang</Tag>
+            <Tag color="volcano">
+              xxx
+            </Tag>
             <StyledButton type="primary" onClick={() => setIsLogin(false)}>注销</StyledButton>
           </> : <>
             <StyledButton type="primary" onClick={() => setIsLogin(true)}>登录</StyledButton>
