@@ -1,6 +1,7 @@
 import React from 'react'
 import {observer} from 'mobx-react'
 import {useStores} from '../stores'
+import Uploader from '../components/Uploader'
 
 const Home = observer(() => {
 
@@ -15,6 +16,7 @@ const Home = observer(() => {
           </> : '未登录，请先登录！'
         }
       </h1>
+      <Uploader/>
     </>
   )
 })
