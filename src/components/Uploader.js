@@ -1,19 +1,21 @@
-import React, {useRef} from 'react'
+import React from 'react'
 import {observer} from 'mobx-react'
 import {useStores} from '../stores'
+import {InboxOutlined} from '@ant-design/icons'
+import {Upload} from 'antd'
+
+const {Dragger} = Upload
 
 
 const Uploader = observer(() => {
-  const ref = useRef()
   const {ImageStore} = useStores()
 
-  const bindChange = () => {
-    console.log(ref.current)
-    window.file = ref.current
-    if (ref.current.files.length > 0) {
-
-      ImageStore.setFilename(ref.current.files[0].name)
-      ImageStore.setFile(ref.current.files[0])
+  const props = {
+    showUploadList: false,
+    beforeUpload: file => {
+      console.log(file)
+      ImageStore.setFilename(file.name)
+      ImageStore.setFile(file)
       ImageStore.upload()
         .then((serverFile) => {
           console.log('上传成功')
@@ -23,15 +25,29 @@ const Uploader = observer(() => {
           console.log('上传失败')
           console.log(error)
         })
+      return false
     }
+
   }
 
 
   return (
-    <div>
-      <h1>文件上传</h1>
-      <input type="file" ref={ref} onChange={bindChange}/>
-    </div>
+    <>
+      <Dragger {...props}>
+        <p className="ant-upload-drag-icon">
+          <InboxOutlined/>
+        </p>
+        <p className="ant-upload-text">Click or drag file to this area to upload</p>
+        <p className="ant-upload-hint">
+          Support for a single or bulk upload. Strictly prohibit from uploading company data or other
+          band files
+        </p>
+      </Dragger>,
+      <div>
+        <h1>上传结果</h1>
+        {ImageStore.serverFile ? <div>图片地址：{ImageStore.serverFile.attributes.url.attributes.url}</div> : null}
+      </div>
+    </>
   )
 })
 
