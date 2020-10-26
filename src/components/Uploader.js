@@ -2,37 +2,36 @@ import React from 'react'
 import {observer} from 'mobx-react'
 import {useStores} from '../stores'
 import {InboxOutlined} from '@ant-design/icons'
-import {Upload} from 'antd'
+import {Upload, message} from 'antd'
 
 const {Dragger} = Upload
 
 
 const Uploader = observer(() => {
-  const {ImageStore} = useStores()
-
+  const {ImageStore, UserStore} = useStores()
   const props = {
     showUploadList: false,
     beforeUpload: file => {
-      console.log(file)
-      ImageStore.setFilename(file.name)
       ImageStore.setFile(file)
+      ImageStore.setFilename(file.name)
+      if (UserStore.currentUser === null) {
+        message.warning('请先登录再上传！')
+        return false
+      }
       ImageStore.upload()
         .then((serverFile) => {
           console.log('上传成功')
           console.log(serverFile)
-        })
-        .catch((error) => {
-          console.log('上传失败')
-          console.log(error)
-        })
+        }).catch((error) => {
+        console.log('上传失败')
+        console.log(error)
+      })
       return false
     }
-
   }
 
-
   return (
-    <>
+    <div>
       <Dragger {...props}>
         <p className="ant-upload-drag-icon">
           <InboxOutlined/>
@@ -45,9 +44,9 @@ const Uploader = observer(() => {
       </Dragger>,
       <div>
         <h1>上传结果</h1>
-        {ImageStore.serverFile ? <div>图片地址：{ImageStore.serverFile.attributes.url.attributes.url}</div> : null}
+        {ImageStore.serverFile ? <div>{ImageStore.serverFile.attributes.url.attributes.url}</div> : null}
       </div>
-    </>
+    </div>
   )
 })
 

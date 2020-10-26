@@ -23,13 +23,11 @@ class ImageStore {
         .then(serverFile => {
           this.serverFile = serverFile
           resolve(serverFile)
-        })
-        .catch(error => {
-          reject(error)
-        })
-        .finally(() => {
-          this.isUploading = false
-        })
+        }).catch(error => {
+        reject(error)
+      }).finally(() => {
+        this.isUploading = false
+      })
     })
   }
 }
