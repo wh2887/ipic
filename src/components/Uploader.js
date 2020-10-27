@@ -1,8 +1,8 @@
-import React from 'react'
-import {observer} from 'mobx-react'
+import React, {useRef} from 'react'
+import {observer, useLocalStore} from 'mobx-react'
 import {useStores} from '../stores'
 import {InboxOutlined} from '@ant-design/icons'
-import {Upload, message} from 'antd'
+import {Upload, message, InputNumber, Form} from 'antd'
 import styled from 'styled-components'
 
 const {Dragger} = Upload
@@ -25,6 +25,9 @@ const Img = styled.img`
 
 const Uploader = observer(() => {
   const {ImageStore, UserStore} = useStores()
+  const ref1 = useRef()
+  const ref2 = useRef()
+
   const props = {
     showUploadList: false,
     beforeUpload: file => {
@@ -44,6 +47,36 @@ const Uploader = observer(() => {
       })
       return false
     }
+  }
+  const store = useLocalStore(() => ({
+    width: null,
+    setWidth(value) {
+      store.width = value
+    },
+    get widthStr() {
+      return store.width ? `/w/${store.width}` : ''
+    },
+
+    height: null,
+    setHeight(value) {
+      store.height = value
+    },
+    get heightStr() {
+      return store.height ? `/h/${store.height}` : ''
+    },
+
+    get fullStr() {
+      return ImageStore.serverFile.attributes.url.attributes.url + '?imageView2/0' + store.widthStr + store.heightStr
+    }
+
+  }))
+
+  const bindWidthChange = (value) => {
+    store.setWidth(value)
+  }
+
+  const bindHeightChange = (value) => {
+    store.setHeight(value)
   }
 
   return (
@@ -71,7 +104,15 @@ const Uploader = observer(() => {
             <dt>图片预览</dt>
             <dd><Img src={ImageStore.serverFile.attributes.url.attributes.url} alt="图片预览"/></dd>
             <dt>更多尺寸</dt>
-            <dd>...</dd>
+            <Form>
+              <Form.Item label="最大宽度（可选）">
+                <InputNumber defaultValue={0} onChange={bindWidthChange} ref={ref1}/>
+              </Form.Item>
+              <Form.Item label="最大高度（可选）">
+                <InputNumber defaultValue={0} onChange={bindHeightChange} ref={ref2}/>
+              </Form.Item>
+            </Form>
+            <dd><a href={store.fullStr} target="_blank">{store.fullStr}</a></dd>
           </dl>
 
         </Result>
@@ -81,6 +122,5 @@ const Uploader = observer(() => {
     </div>
   )
 })
-
 
 export default Uploader
