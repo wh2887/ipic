@@ -5,7 +5,6 @@ import Tips from '../components/Tips'
 
 const Home = observer(() => {
 
-
   return (
     <>
       <Tips>请先登录再上传！！！</Tips>

@@ -3,8 +3,24 @@ import {observer} from 'mobx-react'
 import {useStores} from '../stores'
 import {InboxOutlined} from '@ant-design/icons'
 import {Upload, message} from 'antd'
+import styled from 'styled-components'
 
 const {Dragger} = Upload
+
+const Result = styled.div`
+  border: 1px dashed #ccc;
+  margin-top: 30px;
+  padding: 20px;
+`
+
+const H1 = styled.h1`
+  margin: 20px 0;
+  text-align: center;
+`
+
+const Img = styled.img`
+  max-width: 300px;
+`
 
 
 const Uploader = observer(() => {
@@ -42,10 +58,26 @@ const Uploader = observer(() => {
           band files
         </p>
       </Dragger>,
-      <div>
-        <h1>上传结果</h1>
-        {ImageStore.serverFile ? <div>{ImageStore.serverFile.attributes.url.attributes.url}</div> : null}
-      </div>
+
+      {ImageStore.serverFile ? <>
+        <Result>
+          <H1>上传结果</H1>
+          <dl>
+            <dt>线上地址</dt>
+            <dd><a href={ImageStore.serverFile.attributes.url.attributes.url}
+                   target="_blank">{ImageStore.serverFile.attributes.url.attributes.url}</a></dd>
+            <dt>文件名</dt>
+            <dd>{ImageStore.filename}</dd>
+            <dt>图片预览</dt>
+            <dd><Img src={ImageStore.serverFile.attributes.url.attributes.url} alt="图片预览"/></dd>
+            <dt>更多尺寸</dt>
+            <dd>...</dd>
+          </dl>
+
+        </Result>
+
+      </> : null}
+
     </div>
   )
 })
