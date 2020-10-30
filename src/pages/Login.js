@@ -1,5 +1,5 @@
 import React from 'react'
-import {Form, Input, Button} from 'antd'
+import {Form, Input, Button, message} from 'antd'
 import styled from 'styled-components'
 import {useStores} from '../stores'
 import {useHistory} from 'react-router-dom'
@@ -36,6 +36,7 @@ const Component = () => {
     AuthStore.login()
       .then(() => {
         history.push('/')
+        message.success('登录成功')
       }).catch((e) => {
       console.log(e)
     })

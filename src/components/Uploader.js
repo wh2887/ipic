@@ -2,7 +2,7 @@ import React, {useRef} from 'react'
 import {observer, useLocalStore} from 'mobx-react'
 import {useStores} from '../stores'
 import {InboxOutlined} from '@ant-design/icons'
-import {Upload, message, InputNumber, Form} from 'antd'
+import {Upload, message, InputNumber, Form,Spin} from 'antd'
 import styled from 'styled-components'
 
 const {Dragger} = Upload
@@ -37,13 +37,24 @@ const Uploader = observer(() => {
         message.warning('请先登录再上传！')
         return false
       }
+
+      window.file = file
+
+      if (!/(svg$)|(png$)|(jpg$)|(jpeg$)|(gif$)/ig.test(file.type)) {
+        message.error('只能上传 png / jpg / jpeg / gif 格式的图片')
+        return false
+      }
+      if (file.size > 1024 * 1024) {
+        message.error('图片最大 1M')
+        return false
+      }
+
+
       ImageStore.upload()
         .then((serverFile) => {
-          console.log('上传成功')
-          console.log(serverFile)
+          message.success('上传成功')
         }).catch((error) => {
-        console.log('上传失败')
-        console.log(error)
+        message.error('上传失败')
       })
       return false
     }
@@ -81,16 +92,17 @@ const Uploader = observer(() => {
 
   return (
     <div>
-      <Dragger {...props}>
-        <p className="ant-upload-drag-icon">
-          <InboxOutlined/>
-        </p>
-        <p className="ant-upload-text">Click or drag file to this area to upload</p>
-        <p className="ant-upload-hint">
-          Support for a single or bulk upload. Strictly prohibit from uploading company data or other
-          band files
-        </p>
-      </Dragger>,
+      <Spin tip="上传中"  spinning={ImageStore.isUploading}>
+        <Dragger {...props}>
+          <p className="ant-upload-drag-icon">
+            <InboxOutlined/>
+          </p>
+          <p className="ant-upload-text">单击或拖动文件到该区域以上传</p>
+          <p className="ant-upload-hint">
+            仅支持 .png / .jpg / .jpeg / .gif / .svg 格式的图片，图片最大 1M
+          </p>
+        </Dragger>
+      </Spin>
 
       {ImageStore.serverFile ? <>
         <Result>
@@ -98,7 +110,8 @@ const Uploader = observer(() => {
           <dl>
             <dt>线上地址</dt>
             <dd><a href={ImageStore.serverFile.attributes.url.attributes.url}
-                   target="_blank">{ImageStore.serverFile.attributes.url.attributes.url}</a></dd>
+                   target="_blank" rel="noopener noreferrer">{ImageStore.serverFile.attributes.url.attributes.url}</a>
+            </dd>
             <dt>文件名</dt>
             <dd>{ImageStore.filename}</dd>
             <dt>图片预览</dt>
@@ -112,7 +125,7 @@ const Uploader = observer(() => {
                 <InputNumber defaultValue={0} onChange={bindHeightChange} ref={ref2}/>
               </Form.Item>
             </Form>
-            <dd><a href={store.fullStr} target="_blank">{store.fullStr}</a></dd>
+            <dd><a href={store.fullStr} target="_blank" rel="noopener noreferrer">{store.fullStr}</a></dd>
           </dl>
 
         </Result>
