@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import LogoUrl from '../logo.svg'
 import {NavLink, useHistory} from 'react-router-dom'
 import styled from 'styled-components'
@@ -47,6 +47,10 @@ const Component = observer(() => {
   const handleRegister = () => {
     history.push('/register')
   }
+
+  useEffect(()=>{
+    UserStore.pullUser()
+  },[])
 
 
   return (
