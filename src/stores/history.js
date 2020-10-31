@@ -10,11 +10,11 @@ class HistoryStore {
   limit = 10
 
   @action append(newList) {
-    this.list = this.List.concat(newList)
+    this.list = this.list.concat(newList)
   }
 
   @action find() {
-    this.isLoading = false
+    this.isLoading = true
     Uploader.find({page: this.page, limit: this.limit})
       .then(newList => {
         this.append(newList)
@@ -22,8 +22,12 @@ class HistoryStore {
         if (newList.length < this.limit) {
           this.hasMore = false
         }
-      })
-      .catch(error => message.error('加载数据失败'))
+      }).catch(error => {
+      message.error('加载数据失败')
+      console.log(error)
+    }).finally(() => {
+      this.isLoading = false
+    })
   }
 }
 
