@@ -1,8 +1,8 @@
 {
   "name": "ipic",
   "version": "0.1.0",
-  "private": true,
   "homepage": "./",
+  "private": true,
   "dependencies": {
     "@babel/core": "7.9.0",
     "@babel/plugin-proposal-decorators": "^7.12.1",
